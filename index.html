@@ -2327,8 +2327,7 @@
         }
 
         async function validateCartStock() {
-          const apiUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-              ? 'http://localhost:3000/api' : RIO_GROOVE_CONFIG.backendUrl + '/api';
+          const apiUrl = RIO_GROOVE_CONFIG.backendUrl + '/api';
 
           for (const item of state.cart) {
             if (item.slug) {
@@ -2743,8 +2742,7 @@
           if (!item) return;
 
           if (nextQuantity > item.quantity && item.slug) {
-            const apiUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-              ? 'http://localhost:3000/api' : RIO_GROOVE_CONFIG.backendUrl + '/api';
+            const apiUrl = RIO_GROOVE_CONFIG.backendUrl + '/api';
             try {
               const response = await fetch(`${apiUrl}/products/${item.slug}`);
               if (response.ok) {
@@ -2805,8 +2803,7 @@
 
           setProductFeedback(feedbackElement, 'Verificando estoque...');
 
-          const apiUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-              ? 'http://localhost:3000/api' : RIO_GROOVE_CONFIG.backendUrl + '/api';
+          const apiUrl = RIO_GROOVE_CONFIG.backendUrl + '/api';
           try {
             const response = await fetch(`${apiUrl}/products/${productSlug}`);
             if (response.ok) {
