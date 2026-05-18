@@ -1,0 +1,6 @@
+# Regras de redirecionamento para Cloudflare Pages
+# Evitar fallback para rotas de API caso existam acessos diretos
+/api/* https://rio-groove-backend.onrender.com/api/:splat 200
+
+# Redirecionar todas as outras rotas para index.html (SPA)
+/* /index.html 200
