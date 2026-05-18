@@ -5,12 +5,10 @@ import { initFloatingCart } from './cart.js';
 let isCollectionsLoaded = false;
 let isProductsLoaded = false;
 
-document.addEventListener('DOMContentLoaded', async () => {
-  initFloatingCart();
-  
-  // Handle initial route
-  handleCurrentRoute(window.location.pathname);
-});
+// Inicialização do SPA
+// Como este script é type="module", o DOM já está analisado neste ponto
+initFloatingCart();
+handleCurrentRoute(window.location.pathname);
 
 window.addEventListener('routechange', (e) => {
   handleCurrentRoute(e.detail.path);
@@ -19,23 +17,27 @@ window.addEventListener('routechange', (e) => {
 async function handleCurrentRoute(path) {
   const cleanPath = path.replace(/\/$/, '') || '/';
   
+  const promises = [];
+  
   if (cleanPath === '/' || cleanPath === '/collections') {
-    await loadCollections();
+    promises.push(loadCollections());
   }
   
   if (cleanPath === '/' || cleanPath === '/products') {
-    await loadProducts();
+    promises.push(loadProducts());
   }
   
   if (cleanPath.startsWith('/product/')) {
     const slug = cleanPath.split('/').pop();
-    await loadProductDetail(slug);
+    promises.push(loadProductDetail(slug));
   }
   
   if (cleanPath.startsWith('/collection/')) {
     const slug = cleanPath.split('/').pop();
-    await loadCollectionDetail(slug);
+    promises.push(loadCollectionDetail(slug));
   }
+  
+  await Promise.all(promises);
 }
 
 async function loadCollections() {

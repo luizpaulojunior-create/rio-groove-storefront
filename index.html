@@ -2227,11 +2227,32 @@
           }
         }
 
-        function getTargetSectionId(hash) {
-          const cleanHash = (hash || '').replace('#', '').trim();
-          if (!cleanHash) return defaultSectionId;
-          const target = document.getElementById(cleanHash);
-          return target ? cleanHash : defaultSectionId;
+        function getTargetSectionId(path) {
+          let cleanPath = (path || '').replace('#', '').replace(/^\//, '').replace(/\/$/, '').trim();
+          if (!cleanPath) return defaultSectionId;
+          
+          const routeMap = {
+            'products': 'produtos',
+            'collections': 'colecoes',
+            'sobre': 'sobre',
+            'entrega': 'entrega',
+            'pagamento': 'pagamento',
+            'politicas': 'politicas',
+            'politica-trocas': 'politica-trocas',
+            'politica-privacidade': 'politica-privacidade',
+            'politica-termos': 'politica-termos',
+            'contato': 'contato',
+            'carrinho': 'carrinho',
+            'checkout': 'checkout',
+            'pedido-status': 'pedido-status'
+          };
+
+          if (cleanPath.startsWith('product/')) return 'produto-detalhe';
+          if (cleanPath.startsWith('collection/')) return 'colecao-detalhe';
+          
+          const mappedId = routeMap[cleanPath] || cleanPath;
+          const target = document.getElementById(mappedId);
+          return target ? mappedId : defaultSectionId;
         }
 
         function showSection(path, updateHistory) {
